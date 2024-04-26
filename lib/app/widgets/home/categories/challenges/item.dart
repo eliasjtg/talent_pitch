@@ -68,7 +68,9 @@ class ChallengeItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 150,
-      child: ListView(
+      child: !loading && (challenges?.isEmpty ?? true) ? const Center(
+        child: Text('Sin resultados'),
+      ) : ListView(
         scrollDirection: Axis.horizontal,
         children: [
           if (category.image != null)

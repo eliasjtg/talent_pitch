@@ -21,7 +21,9 @@ class HighlightedImageTalents extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 120,
-      child: ListView(
+      child: !loading && (talents?.isEmpty ?? true) ? const Center(
+        child: Text('Sin resultados'),
+      ) : ListView(
         scrollDirection: Axis.horizontal,
         children: [
           Padding(

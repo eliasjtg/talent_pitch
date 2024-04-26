@@ -19,19 +19,23 @@ class TopListTalents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return talents != null
-        ? Column(
-            children: talents!
-                .mapIndexed((int index, Talent talent) => TopListTalent(
-                      index: index + 1,
-                      talent: talent,
-                    ))
-                .toList(),
-          )
-        : Skeletonizer(
+    return loading
+        ? Skeletonizer(
             child: Column(
             children: List.generate(4, (index) => const TopListLoadingTalent()),
-          ));
+          ))
+        : (talents?.isEmpty ?? true)
+            ? const Center(
+                child: Text('Sin resultados'),
+              )
+            : Column(
+                children: talents!
+                    .mapIndexed((int index, Talent talent) => TopListTalent(
+                          index: index + 1,
+                          talent: talent,
+                        ))
+                    .toList(),
+              );
   }
 }
 
@@ -69,8 +73,8 @@ class TopListTalent extends StatelessWidget {
             talent.name,
             overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+                  fontWeight: FontWeight.bold,
+                ),
           )),
         ],
       ),
