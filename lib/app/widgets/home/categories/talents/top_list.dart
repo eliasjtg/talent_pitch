@@ -61,11 +61,33 @@ class TopListTalent extends StatelessWidget {
       horizontalTitleGap: 0,
       title: Row(
         children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundImage: talent.avatar != null
-                ? Image.network(talent.avatar!).image
-                : null,
+          SizedBox(
+            height: 50,
+            width: 50,
+            child: Stack(
+              clipBehavior: Clip.none,
+              fit: StackFit.expand,
+              children: [
+                CircleAvatar(
+                  radius: 25,
+                  backgroundImage: talent.avatar != null
+                      ? Image.network(talent.avatar!).image
+                      : null,
+                ),
+                if(talent.video != null) Positioned(
+                    bottom: -5,
+                    right: -35,
+                    child: RawMaterialButton(
+                      onPressed: () {},
+                      elevation: 2.0,
+                      padding: EdgeInsets.zero,
+                      visualDensity: VisualDensity.compact,
+                      fillColor: const Color(0xFFF5F6F9),
+                      shape: const CircleBorder(),
+                      child: const Icon(Icons.play_arrow, color: Colors.redAccent, size: 20,),
+                    )),
+              ],
+            ),
           ),
           const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
           Flexible(

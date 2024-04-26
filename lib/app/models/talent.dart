@@ -16,6 +16,8 @@ class Talent with _$Talent {
     @JsonKey(name: 'want_to_be', fromJson: nullableEmptyString)
     String? wantToBe,
     @JsonKey(fromJson: nullableEmptyString)
+    String? video,
+    @JsonKey(fromJson: nullableEmptyString)
     String? avatar,
     @JsonKey(fromJson: nullableEmptyString)
     String? about,
