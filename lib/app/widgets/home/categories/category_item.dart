@@ -22,7 +22,7 @@ class CategoryItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 15),
             child: Text(
-              category.title,
+              '${category.title} (${category.models.length})',
               style: Theme.of(context).textTheme.titleLarge,
             ),
           ),

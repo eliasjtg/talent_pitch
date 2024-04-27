@@ -14,8 +14,15 @@ class TopListTalents extends StatelessWidget {
   /// List of [talents]
   final List<Talent>? talents;
 
+  /// [onTap] on talent
+  final void Function(int index, Talent talent) onTap;
+
   const TopListTalents(
-      {super.key, required this.loading, this.talents, required this.category});
+      {super.key,
+      required this.loading,
+      this.talents,
+      required this.category,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +40,9 @@ class TopListTalents extends StatelessWidget {
                     .mapIndexed((int index, Talent talent) => TopListTalent(
                           index: index + 1,
                           talent: talent,
+                          onTap: () {
+                            onTap(index, talent);
+                          },
                         ))
                     .toList(),
               );
@@ -46,7 +56,14 @@ class TopListTalent extends StatelessWidget {
   /// [talent]
   final Talent talent;
 
-  const TopListTalent({super.key, required this.talent, required this.index});
+  /// [onTap] callback
+  final VoidCallback onTap;
+
+  const TopListTalent(
+      {super.key,
+      required this.talent,
+      required this.index,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -61,32 +78,40 @@ class TopListTalent extends StatelessWidget {
       horizontalTitleGap: 0,
       title: Row(
         children: [
-          SizedBox(
-            height: 50,
-            width: 50,
-            child: Stack(
-              clipBehavior: Clip.none,
-              fit: StackFit.expand,
-              children: [
-                CircleAvatar(
-                  radius: 25,
-                  backgroundImage: talent.avatar != null
-                      ? Image.network(talent.avatar!).image
-                      : null,
-                ),
-                if(talent.video != null) Positioned(
-                    bottom: -5,
-                    right: -35,
-                    child: RawMaterialButton(
-                      onPressed: () {},
-                      elevation: 2.0,
-                      padding: EdgeInsets.zero,
-                      visualDensity: VisualDensity.compact,
-                      fillColor: const Color(0xFFF5F6F9),
-                      shape: const CircleBorder(),
-                      child: const Icon(Icons.play_arrow, color: Colors.redAccent, size: 20,),
-                    )),
-              ],
+          GestureDetector(
+            onTap: onTap,
+            child: SizedBox(
+              height: 50,
+              width: 50,
+              child: Stack(
+                clipBehavior: Clip.none,
+                fit: StackFit.expand,
+                children: [
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundImage: talent.avatar != null
+                        ? Image.network(talent.avatar!).image
+                        : null,
+                  ),
+                  if (talent.video != null)
+                    Positioned(
+                        bottom: -5,
+                        right: -35,
+                        child: RawMaterialButton(
+                          onPressed: onTap,
+                          elevation: 2.0,
+                          padding: EdgeInsets.zero,
+                          visualDensity: VisualDensity.compact,
+                          fillColor: const Color(0xFFF5F6F9),
+                          shape: const CircleBorder(),
+                          child: const Icon(
+                            Icons.play_arrow,
+                            color: Colors.redAccent,
+                            size: 20,
+                          ),
+                        )),
+                ],
+              ),
             ),
           ),
           const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),

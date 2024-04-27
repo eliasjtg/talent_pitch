@@ -12,8 +12,8 @@ class ChallengeRepository {
       useBaseUrl: false,
       options: globalCacheOptions
           .copyWith(
-        policy: CachePolicy.refresh,
-      )
+            policy: CachePolicy.refresh,
+          )
           .toOptions(),
     );
 
