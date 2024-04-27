@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:better_player/better_player.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:readmore/readmore.dart';
 import 'package:talent_pitch/app/models/talent.dart';
+import 'package:talent_pitch/app/states/custom_playlist.dart';
 
-class TalentViewerWidget extends StatelessWidget {
+class TalentViewerWidget extends ConsumerWidget {
   /// [talent]
   final Talent talent;
 
@@ -14,7 +16,9 @@ class TalentViewerWidget extends StatelessWidget {
       {super.key, required this.talent, required this.controller});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(customPlaylistNotifierProvider);
+    final inPlaylist = ref.watch(customPlaylistNotifierProvider.notifier).contain(talent);
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -29,6 +33,24 @@ class TalentViewerWidget extends StatelessWidget {
               controller: controller!,
             ),
           ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: IconButton(
+            iconSize: 32,
+            icon: inPlaylist
+                ? const Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                  )
+                : const Icon(Icons.favorite),
+            onPressed: () {
+              inPlaylist
+                  ? ref.read(customPlaylistNotifierProvider.notifier).remove(talent)
+                  : ref.read(customPlaylistNotifierProvider.notifier).store(talent);
+            },
+          ),
+        ),
         Positioned(
           bottom: 0,
           left: 0,

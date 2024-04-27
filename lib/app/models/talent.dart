@@ -9,6 +9,10 @@ part 'talent.freezed.dart';
 /// Since our Talent class is serializable, we must add this line.
 part 'talent.g.dart';
 
+String talentBaseModel(dynamic value) {
+  return 'talent';
+}
+
 @freezed
 class Talent extends BaseModel with _$Talent {
   const factory Talent({
@@ -17,7 +21,8 @@ class Talent extends BaseModel with _$Talent {
     @JsonKey(
         name: 'base_model_type',
         defaultValue: 'talent',
-        includeFromJson: false,
+        fromJson: talentBaseModel,
+        includeToJson: true,
         required: false)
     String baseModelType,
     required String name,

@@ -9,4 +9,6 @@ abstract class BaseModel {
   final String? video;
 
   BaseModel({required this.id, required this.baseModelType, this.video});
+
+  Map<String, dynamic> toJson();
 }

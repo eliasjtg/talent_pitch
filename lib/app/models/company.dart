@@ -9,6 +9,10 @@ part 'company.freezed.dart';
 /// Since our Company class is serializable, we must add this line.
 part 'company.g.dart';
 
+String companyBaseModel(dynamic value) {
+  return 'company';
+}
+
 @freezed
 class Company extends BaseModel with _$Company {
   const factory Company({
@@ -17,7 +21,8 @@ class Company extends BaseModel with _$Company {
     @JsonKey(
         name: 'base_model_type',
         defaultValue: 'company',
-        includeFromJson: false,
+        fromJson: companyBaseModel,
+        includeToJson: true,
         required: false)
     String baseModelType,
     required String name,

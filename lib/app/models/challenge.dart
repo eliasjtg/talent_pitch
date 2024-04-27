@@ -9,6 +9,10 @@ part 'challenge.freezed.dart';
 /// Since our Challenge class is serializable, we must add this line.
 part 'challenge.g.dart';
 
+String challengeBaseModel(dynamic value) {
+  return 'challenge';
+}
+
 @freezed
 class Challenge extends BaseModel with _$Challenge {
   const factory Challenge({
@@ -17,7 +21,8 @@ class Challenge extends BaseModel with _$Challenge {
     @JsonKey(
         name: 'base_model_type',
         defaultValue: 'challenge',
-        includeFromJson: false,
+        fromJson: challengeBaseModel,
+        includeToJson: true,
         required: false)
     String baseModelType,
     required String name,
