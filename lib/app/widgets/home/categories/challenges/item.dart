@@ -278,6 +278,9 @@ class ChallengeContent extends StatelessWidget {
             onPressed: () {},
             child: Text(
               AppLocalizations.of(context)!.send_pitch,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ),
         ],
