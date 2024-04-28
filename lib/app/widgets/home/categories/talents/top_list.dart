@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:talent_pitch/app/models/category.dart';
 import 'package:talent_pitch/app/models/talent.dart';
 
+/// Top list talents
 class TopListTalents extends StatelessWidget {
   /// [loading]
   final bool loading;
@@ -17,38 +19,47 @@ class TopListTalents extends StatelessWidget {
   /// [onTap] on talent
   final void Function(int index, Talent talent) onTap;
 
-  const TopListTalents(
-      {super.key,
-      required this.loading,
-      this.talents,
-      required this.category,
-      required this.onTap});
+  /// TopListTalents constructor
+  const TopListTalents({
+    super.key,
+    required this.loading,
+    this.talents,
+    required this.category,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return loading
         ? Skeletonizer(
             child: Column(
-            children: List.generate(4, (index) => const TopListLoadingTalent()),
-          ))
+              children: List.generate(
+                4,
+                (index) => const TopListLoadingTalent(),
+              ),
+            ),
+          )
         : (talents?.isEmpty ?? true)
-            ? const Center(
-                child: Text('Sin resultados'),
+            ? Center(
+                child: Text(
+                  AppLocalizations.of(context)!.without_results,
+                ),
               )
             : Column(
                 children: talents!
-                    .mapIndexed((int index, Talent talent) => TopListTalent(
-                          index: index + 1,
-                          talent: talent,
-                          onTap: () {
-                            onTap(index, talent);
-                          },
-                        ))
+                    .mapIndexed(
+                      (int index, Talent talent) => TopListTalent(
+                        index: index + 1,
+                        talent: talent,
+                        onTap: () => onTap(index, talent),
+                      ),
+                    )
                     .toList(),
               );
   }
 }
 
+/// Top list talent
 class TopListTalent extends StatelessWidget {
   /// List [index]
   final int index;
@@ -59,11 +70,13 @@ class TopListTalent extends StatelessWidget {
   /// [onTap] callback
   final VoidCallback onTap;
 
-  const TopListTalent(
-      {super.key,
-      required this.talent,
-      required this.index,
-      required this.onTap});
+  /// TopListTalent constructor
+  const TopListTalent({
+    super.key,
+    required this.talent,
+    required this.index,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -95,41 +108,45 @@ class TopListTalent extends StatelessWidget {
                   ),
                   if (talent.video != null)
                     Positioned(
-                        bottom: -5,
-                        right: -35,
-                        child: RawMaterialButton(
-                          onPressed: onTap,
-                          elevation: 2.0,
-                          padding: EdgeInsets.zero,
-                          visualDensity: VisualDensity.compact,
-                          fillColor: const Color(0xFFF5F6F9),
-                          shape: const CircleBorder(),
-                          child: const Icon(
-                            Icons.play_arrow,
-                            color: Colors.redAccent,
-                            size: 20,
-                          ),
-                        )),
+                      bottom: -5,
+                      right: -35,
+                      child: RawMaterialButton(
+                        onPressed: onTap,
+                        elevation: 2.0,
+                        padding: EdgeInsets.zero,
+                        visualDensity: VisualDensity.compact,
+                        fillColor: const Color(0xFFF5F6F9),
+                        shape: const CircleBorder(),
+                        child: const Icon(
+                          Icons.play_arrow,
+                          color: Colors.redAccent,
+                          size: 20,
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
           const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
           Flexible(
-              child: Text(
-            talent.name,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          )),
+            child: Text(
+              talent.name,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
         ],
       ),
     );
   }
 }
 
+/// Top list loading talent
 class TopListLoadingTalent extends StatelessWidget {
+  /// TopListLoadingTalent constructor
   const TopListLoadingTalent({super.key});
 
   @override
@@ -143,7 +160,9 @@ class TopListLoadingTalent extends StatelessWidget {
           CircleAvatar(
             radius: 25,
           ),
-          Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+          ),
           Text('Talent name'),
         ],
       ),

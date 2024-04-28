@@ -5,6 +5,7 @@ import 'package:talent_pitch/app/requests/cache.config.dart';
 import 'package:talent_pitch/app/requests/request.dart';
 
 class CompanyRepository {
+  /// Fetch companies from API
   Future<List<Company>> categoryUrlCompanies(String url) async {
     /// Call companies API
     final response = await get(

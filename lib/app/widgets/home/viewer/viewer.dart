@@ -9,6 +9,10 @@ import 'package:talent_pitch/app/widgets/home/viewer/types/challenge.dart';
 import 'package:talent_pitch/app/widgets/home/viewer/types/company.dart';
 import 'package:talent_pitch/app/widgets/home/viewer/types/talent.dart';
 
+/// Swipe sensibility
+const int swipeSensibility = 500;
+
+/// Pitch viewer
 class ViewerView extends ConsumerWidget {
   /// View [model]
   final BaseModel? model;
@@ -16,10 +20,13 @@ class ViewerView extends ConsumerWidget {
   /// Video [controller]
   final BetterPlayerController? controller;
 
+  /// [onSwipeLeft] callback
   final VoidCallback? onSwipeLeft;
 
+  /// [onSwipeRight] callback
   final VoidCallback? onSwipeRight;
 
+  /// ViewerView constructor
   const ViewerView({
     super.key,
     this.model,
@@ -34,31 +41,30 @@ class ViewerView extends ConsumerWidget {
       backgroundColor: Colors.black,
       body: SafeArea(
         child: GestureDetector(
+          /// Swipe gesture
           onHorizontalDragEnd: (details) {
-            if ((details.primaryVelocity ?? 0) >= 500) {
-              print('SWIPE LEFT');
+            if ((details.primaryVelocity ?? 0) >= swipeSensibility) {
               onSwipeLeft?.call();
             }
-            if ((details.primaryVelocity ?? 0) <= 500) {
-              print('SWIPE RIGHT');
+            if ((details.primaryVelocity ?? 0) <= swipeSensibility) {
               onSwipeRight?.call();
             }
           },
           onTap: () {
+            /// Play/pause on tap
             if (controller?.isVideoInitialized() == true) {
               controller!.isPlaying() == true
                   ? controller!.pause()
                   : controller!.play();
             }
           },
-          child: Center(
-            child: getType(),
-          ),
+          child: getType(),
         ),
       ),
     );
   }
 
+  /// Pitch type widget
   Widget getType() {
     if (model is Talent) {
       return TalentViewerWidget(

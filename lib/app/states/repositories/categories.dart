@@ -5,6 +5,7 @@ import 'package:talent_pitch/app/requests/cache.config.dart';
 import 'package:talent_pitch/app/requests/request.dart';
 
 class CategoriesRepository {
+  /// Fetch categories from API
   Future<List<Category>> listCategories() async {
     /// Call categories API
     final response = await get(

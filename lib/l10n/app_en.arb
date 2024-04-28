@@ -1,6 +1,18 @@
 {
-  "helloWorld": "Hello World!",
-  "@helloWorld": {
-    "description": "The conventional newborn programmer greeting"
-  }
+  "nav_home": "Home",
+  "nav_playlist": "Playlist",
+
+  "without_pitch": "Without pitch",
+  "without_results": "Without results",
+  "no_categories_available": "No categories available",
+  "no_pitch_available": "There are no pitch's in the playlist",
+
+  "follow": "Follow",
+  "send_pitch": "Send pitch",
+  "show_less": "Show less",
+  "show_more": "Show more",
+
+  "retry": "Retry",
+  "error_title": "An error occurred",
+  "error_subtitle": "We were unable to load the information"
 }

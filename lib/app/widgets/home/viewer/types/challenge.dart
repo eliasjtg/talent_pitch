@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:better_player/better_player.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:readmore/readmore.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:talent_pitch/app/models/challenge.dart';
 import 'package:talent_pitch/app/states/custom_playlist.dart';
+import 'package:talent_pitch/app/widgets/show_more.dart';
 
+/// Pitch challenge viewer
 class ChallengeViewerWidget extends ConsumerWidget {
   /// [challenge]
   final Challenge challenge;
@@ -12,8 +14,12 @@ class ChallengeViewerWidget extends ConsumerWidget {
   /// Video [controller]
   final BetterPlayerController? controller;
 
-  const ChallengeViewerWidget(
-      {super.key, required this.challenge, required this.controller});
+  /// ChallengeViewerWidget constructor
+  const ChallengeViewerWidget({
+    super.key,
+    required this.challenge,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,10 +49,10 @@ class ChallengeViewerWidget extends ConsumerWidget {
           ),
         if ((controller == null || challenge.video == null) &&
             challenge.image == null)
-          const Center(
+          Center(
             child: Text(
-              'Sin pitch',
-              style: TextStyle(color: Colors.white),
+              AppLocalizations.of(context)!.without_pitch,
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         Positioned(
@@ -78,7 +84,11 @@ class ChallengeViewerWidget extends ConsumerWidget {
           child: Container(
             color: Colors.black26,
             child: Padding(
-              padding: const EdgeInsets.only(left: 10, bottom: 10, right: 10),
+              padding: const EdgeInsets.only(
+                left: 10,
+                bottom: 10,
+                right: 10,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -86,19 +96,13 @@ class ChallengeViewerWidget extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: challenge.video != null
-                          ? ReadMoreText(
+                          ? ShowMoreWidget(
                               challenge.description!,
-                              trimMode: TrimMode.Line,
-                              trimLines: 2,
-                              colorClickableText: Colors.pink,
-                              trimCollapsedText: 'Show more',
-                              trimExpandedText: 'Show less',
-                              moreStyle: const TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
-                              style: const TextStyle(color: Colors.white),
                             )
-                          : Text(challenge.description!,
-                              style: const TextStyle(color: Colors.white)),
+                          : Text(
+                              challenge.description!,
+                              style: const TextStyle(color: Colors.white),
+                            ),
                     ),
                   if (challenge.companyName != null &&
                       challenge.companyLogo != null)
@@ -112,17 +116,19 @@ class ChallengeViewerWidget extends ConsumerWidget {
                                 : null,
                           ),
                         const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 5)),
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                        ),
                         if (challenge.companyName != null)
                           Expanded(
-                              child: Text(
-                            challenge.companyName!,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(color: Colors.white),
-                          )),
+                            child: Text(
+                              challenge.companyName!,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(color: Colors.white),
+                            ),
+                          ),
                       ],
                     ),
                 ],

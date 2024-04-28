@@ -1,0 +1,18 @@
+{
+  "nav_home": "Inicio",
+  "nav_playlist": "Playlist",
+
+  "without_pitch": "Sin pitch",
+  "without_results": "Sin resultados",
+  "no_categories_available": "No hay categorías disponibles",
+  "no_pitch_available": "No hay pitch's en la playlist",
+
+  "follow": "Seguir",
+  "send_pitch": "Enviar pitch",
+  "show_less": "Mostrar menos",
+  "show_more": "Mostrar más",
+
+  "retry": "Reintentar",
+  "error_title": "Ocurrió un error",
+  "error_subtitle": "No hemos podido cargar la información"
+}

@@ -5,10 +5,12 @@ import 'package:talent_pitch/app/widgets/home/categories/challenges/item.dart';
 import 'package:talent_pitch/app/widgets/home/categories/companies/item.dart';
 import 'package:talent_pitch/app/widgets/home/categories/talents/item.dart';
 
+/// Category item
 class CategoryItem extends StatelessWidget {
   /// Item [category]
   final Category category;
 
+  /// CategoryItem constructor
   const CategoryItem({super.key, required this.category});
 
   @override

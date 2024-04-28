@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:better_player/better_player.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:readmore/readmore.dart';
 import 'package:talent_pitch/app/models/company.dart';
 import 'package:talent_pitch/app/states/custom_playlist.dart';
+import 'package:talent_pitch/app/widgets/show_more.dart';
 
+/// Pitch company viewer
 class CompanyViewerWidget extends ConsumerWidget {
   /// [company]
   final Company company;
@@ -12,8 +13,12 @@ class CompanyViewerWidget extends ConsumerWidget {
   /// Video [controller]
   final BetterPlayerController? controller;
 
-  const CompanyViewerWidget(
-      {super.key, required this.company, required this.controller});
+  /// CompanyViewerWidget constructor
+  const CompanyViewerWidget({
+    super.key,
+    required this.company,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -73,19 +78,13 @@ class CompanyViewerWidget extends ConsumerWidget {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: company.video != null
-                          ? ReadMoreText(
+                          ? ShowMoreWidget(
                               company.description!,
-                              trimMode: TrimMode.Line,
-                              trimLines: 2,
-                              colorClickableText: Colors.pink,
-                              trimCollapsedText: 'Show more',
-                              trimExpandedText: 'Show less',
-                              moreStyle: const TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
-                              style: const TextStyle(color: Colors.white),
                             )
-                          : Text(company.description!,
-                              style: const TextStyle(color: Colors.white)),
+                          : Text(
+                              company.description!,
+                              style: const TextStyle(color: Colors.white),
+                            ),
                     ),
                   Row(
                     children: [
@@ -97,16 +96,18 @@ class CompanyViewerWidget extends ConsumerWidget {
                               : null,
                         ),
                       const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5)),
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                      ),
                       Expanded(
-                          child: Text(
-                        company.name,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium
-                            ?.copyWith(color: Colors.white),
-                      )),
+                        child: Text(
+                          company.name,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(color: Colors.white),
+                        ),
+                      ),
                     ],
                   ),
                 ],

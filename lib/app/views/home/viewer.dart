@@ -4,7 +4,9 @@ import 'package:talent_pitch/app/states/playlist.dart';
 import 'package:talent_pitch/app/states/video.dart';
 import 'package:talent_pitch/app/widgets/home/viewer/viewer.dart';
 
+/// Pitch viewer
 class PlaylistViewer extends ConsumerWidget {
+  /// PlaylistViewer constructor
   const PlaylistViewer({super.key});
 
   @override

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:better_player/better_player.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:readmore/readmore.dart';
 import 'package:talent_pitch/app/models/talent.dart';
 import 'package:talent_pitch/app/states/custom_playlist.dart';
+import 'package:talent_pitch/app/widgets/show_more.dart';
 
+/// Pitch talent viewer
 class TalentViewerWidget extends ConsumerWidget {
   /// [talent]
   final Talent talent;
@@ -12,8 +15,12 @@ class TalentViewerWidget extends ConsumerWidget {
   /// Video [controller]
   final BetterPlayerController? controller;
 
-  const TalentViewerWidget(
-      {super.key, required this.talent, required this.controller});
+  /// TalentViewerWidget constructor
+  const TalentViewerWidget({
+    super.key,
+    required this.talent,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,10 +44,10 @@ class TalentViewerWidget extends ConsumerWidget {
             ),
           ),
         if (controller == null || talent.video == null)
-          const Center(
+          Center(
             child: Text(
-              'Sin pitch',
-              style: TextStyle(color: Colors.white),
+              AppLocalizations.of(context)!.without_pitch,
+              style: const TextStyle(color: Colors.white),
             ),
           ),
         Positioned(
@@ -70,7 +77,11 @@ class TalentViewerWidget extends ConsumerWidget {
           left: 0,
           right: 0,
           child: Padding(
-            padding: const EdgeInsets.only(left: 10, bottom: 10, right: 65),
+            padding: const EdgeInsets.only(
+              left: 10,
+              bottom: 10,
+              right: 65,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -82,33 +93,30 @@ class TalentViewerWidget extends ConsumerWidget {
                           ? Image.network(talent.avatar!).image
                           : null,
                     ),
-                    const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                    ),
                     Expanded(
-                        child: Text(
-                      talent.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(color: Colors.white),
-                    )),
+                      child: Text(
+                        talent.name,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(color: Colors.white),
+                      ),
+                    ),
                   ],
                 ),
                 if (talent.about != null)
                   Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: ReadMoreText(
-                      talent.about!,
-                      trimMode: TrimMode.Line,
-                      trimLines: 2,
-                      colorClickableText: Colors.pink,
-                      trimCollapsedText: 'Show more',
-                      trimExpandedText: 'Show less',
-                      moreStyle: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.bold),
-                      style: const TextStyle(color: Colors.white),
+                    padding: const EdgeInsets.only(
+                      top: 10,
                     ),
-                  )
+                    child: ShowMoreWidget(
+                      talent.about!,
+                    ),
+                  ),
               ],
             ),
           ),

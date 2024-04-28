@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/// Card error
 class CardErrorWidget extends StatelessWidget {
+  /// [onRetry] callback
   final VoidCallback? onRetry;
 
+  /// CardErrorWidget constructor
   const CardErrorWidget({super.key, this.onRetry});
 
   @override
@@ -13,20 +17,20 @@ class CardErrorWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            const ListTile(
-              leading: Icon(
+            ListTile(
+              leading: const Icon(
                 Icons.bug_report,
                 color: Colors.red,
               ),
-              title: Text('Ocurrio un error'),
-              subtitle: Text('No hemos podido cargar la informacion'),
+              title: Text(AppLocalizations.of(context)!.error_title),
+              subtitle: Text(AppLocalizations.of(context)!.error_subtitle),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 TextButton(
                   onPressed: onRetry,
-                  child: const Text('Reintentar'),
+                  child: Text(AppLocalizations.of(context)!.retry),
                 ),
                 const SizedBox(width: 8),
               ],

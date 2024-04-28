@@ -4,25 +4,34 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:talent_pitch/app/states/current_custom.dart';
 import 'package:talent_pitch/app/states/current_nav_index.dart';
 import 'package:talent_pitch/app/states/custom_playlist.dart';
-import 'package:talent_pitch/app/views/home/navs/categories.dart';
-import 'package:talent_pitch/app/views/home/navs/custom_playlist.dart';
+import 'package:talent_pitch/app/widgets/home/body.dart';
+import 'package:talent_pitch/app/widgets/home/nav_bar.dart';
 
+/// Home view
 class HomeView extends ConsumerStatefulWidget {
+  /// Home view constructor
   const HomeView({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => HomeViewState();
 }
 
+/// Home view state
 class HomeViewState extends ConsumerState<HomeView> {
+  /// Nav listener
   late final ProviderSubscription<int> navListen;
 
   @override
   void initState() {
     SchedulerBinding.instance.addPostFrameCallback((_) {
+      /// Init custom playlist initializer
       ref.read(customPlaylistNotifierProvider.notifier).init();
     });
+
+    /// Init listener
+    /// Temporal listener to dispose state
     navListen = ref.listenManual(currentNavIndexProvider, (previous, next) {
+      /// If changing from custom playlist to home
       if (previous == 1 && next == 0) {
         /// Close
         ref.read(currentCustomNotifierProvider.notifier).onClose();
@@ -33,6 +42,7 @@ class HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    /// Keep alive custom playlist at home Scaffold
     ref.watch(customPlaylistNotifierProvider);
     return const Scaffold(
       body: HomeBody(),
@@ -42,48 +52,8 @@ class HomeViewState extends ConsumerState<HomeView> {
 
   @override
   void dispose() {
+    /// Dispose listener
     navListen.close();
     super.dispose();
-  }
-}
-
-class HomeBody extends ConsumerWidget {
-  const HomeBody({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final int currentIndex = ref.watch(currentNavIndexProvider);
-    return SafeArea(
-      child: currentIndex == 1
-          ? const CustomPlaylistSection()
-          : const CategoriesSection(),
-    );
-  }
-}
-
-class HomeNavigationBar extends ConsumerWidget {
-  const HomeNavigationBar({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final int currentIndex = ref.watch(currentNavIndexProvider);
-    return NavigationBar(
-      selectedIndex: currentIndex,
-      destinations: const <Widget>[
-        NavigationDestination(
-          selectedIcon: Icon(Icons.home_outlined),
-          icon: Icon(Icons.home_outlined),
-          label: 'Home',
-        ),
-        NavigationDestination(
-          selectedIcon: Icon(Icons.playlist_play),
-          icon: Icon(Icons.playlist_play),
-          label: 'Playlist',
-        ),
-      ],
-      onDestinationSelected: (int index) {
-        ref.read(currentNavIndexProvider.notifier).currentIndex = index;
-      },
-    );
   }
 }

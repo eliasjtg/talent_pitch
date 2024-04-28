@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:talent_pitch/app/models/category.dart';
@@ -10,44 +11,55 @@ import 'package:talent_pitch/app/states/categories.dart';
 import 'package:talent_pitch/app/states/playlist.dart';
 import 'package:talent_pitch/app/states/repositories/company.dart';
 
+/// Companies item
 class CompaniesItem extends ConsumerStatefulWidget {
   /// Item [category]
   final Category category;
 
-  /// [companyRepository]
+  /// [companyRepository] instance
   final CompanyRepository companyRepository = CompanyRepository();
 
+  /// CompaniesItem constructor
   CompaniesItem({super.key, required this.category});
 
   @override
   CompaniesItemState createState() => CompaniesItemState();
 }
 
+/// Companies item state
 class CompaniesItemState extends ConsumerState<CompaniesItem>
     with AutomaticKeepAliveClientMixin {
+  /// [futureCompanies]
   late final Future<List<Company>> futureCompanies;
 
   @override
   void initState() {
+    /// Fetch companies from principal category
     futureCompanies =
         widget.companyRepository.categoryUrlCompanies(widget.category.url);
     futureCompanies.then(
       (List<Company> companies) => ref
           .read(asyncCategoriesProvider.notifier)
+
+          /// Load models to category
           .setCategoryModels(widget.category, companies),
     );
     super.initState();
   }
 
+  /// On tap company
   void onTapCompany(int index, Company company) {
     ref
         .read(playlistNotifierProvider.notifier)
+
+        /// Set category and current company
         .setCategory(widget.category, index);
     context
         .pushNamed('/viewer')
 
         /// Temporal fix to Pop Callback
         .then((value) {
+      /// Close playlist on finish view
       ref.read(playlistNotifierProvider.notifier).onClose();
     });
   }
@@ -72,6 +84,7 @@ class CompaniesItemState extends ConsumerState<CompaniesItem>
   bool get wantKeepAlive => true;
 }
 
+/// Company item
 class CompanyItem extends StatelessWidget {
   /// [loading]
   final bool loading;
@@ -85,20 +98,24 @@ class CompanyItem extends StatelessWidget {
   /// [onTap] on talent
   final void Function(int index, Company company) onTap;
 
-  const CompanyItem(
-      {super.key,
-      required this.loading,
-      this.companies,
-      required this.category,
-      required this.onTap});
+  /// CompanyItem constructor
+  const CompanyItem({
+    super.key,
+    required this.loading,
+    this.companies,
+    required this.category,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 150,
       child: !loading && (companies?.isEmpty ?? true)
-          ? const Center(
-              child: Text('Sin resultados'),
+          ? Center(
+              child: Text(
+                AppLocalizations.of(context)!.without_results,
+              ),
             )
           : ListView(
               scrollDirection: Axis.horizontal,
@@ -113,47 +130,62 @@ class CompanyItem extends StatelessWidget {
                         width: 100,
                         fit: BoxFit.cover,
                         imageUrl: category.image!,
-                        placeholder: (BuildContext context, String url) =>
-                            const Center(child: CircularProgressIndicator()),
-                        errorWidget:
-                            (BuildContext context, String url, Object? error) =>
-                                const Center(
+                        placeholder: (
+                          BuildContext context,
+                          String url,
+                        ) =>
+                            const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (
+                          BuildContext context,
+                          String url,
+                          Object? error,
+                        ) =>
+                            const Center(
                           child: Icon(Icons.error),
                         ),
                       ),
                     ),
                   ),
-                const Padding(padding: EdgeInsets.symmetric(horizontal: 5)),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                ),
                 if (loading && companies == null)
                   Skeletonizer(
-                      child: Row(
-                    children: List.generate(
+                    child: Row(
+                      children: List.generate(
                         3,
                         (index) => const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              child: LoadingCompany(),
-                            )),
-                  )),
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: LoadingCompany(),
+                        ),
+                      ),
+                    ),
+                  ),
                 if (companies != null)
                   Row(
                     children: companies!
-                        .mapIndexed((int index, Company company) => Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 2),
-                              child: CompanyContent(
-                                  company: company,
-                                  onTap: () {
-                                    onTap(index, company);
-                                  }),
-                            ))
+                        .mapIndexed(
+                          (int index, Company company) => Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 2,
+                            ),
+                            child: CompanyContent(
+                              company: company,
+                              onTap: () => onTap(index, company),
+                            ),
+                          ),
+                        )
                         .toList(),
-                  )
+                  ),
               ],
             ),
     );
   }
 }
 
+/// Company content
 class CompanyContent extends StatelessWidget {
   /// [company]
   final Company company;
@@ -161,7 +193,12 @@ class CompanyContent extends StatelessWidget {
   /// [onTap] callback
   final VoidCallback onTap;
 
-  const CompanyContent({super.key, required this.company, required this.onTap});
+  /// CompanyContent constructor
+  const CompanyContent({
+    super.key,
+    required this.company,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -178,7 +215,9 @@ class CompanyContent extends StatelessWidget {
                   : null,
             ),
           ),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 5),
+          ),
           Flexible(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 2),
@@ -192,15 +231,22 @@ class CompanyContent extends StatelessWidget {
               ),
             ),
           ),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          OutlinedButton(onPressed: () {}, child: const Text('Follow')),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 5),
+          ),
+          OutlinedButton(
+            onPressed: () {},
+            child: Text(AppLocalizations.of(context)!.follow),
+          ),
         ],
       ),
     );
   }
 }
 
+/// Loading company
 class LoadingCompany extends StatelessWidget {
+  /// LoadingCompany constructor
   const LoadingCompany({super.key});
 
   @override
@@ -210,10 +256,19 @@ class LoadingCompany extends StatelessWidget {
         const CircleAvatar(
           radius: 25,
         ),
-        const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 5),
+        ),
         const Text('Company name'),
-        const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-        OutlinedButton(onPressed: () {}, child: const Text('Follow')),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 5),
+        ),
+        OutlinedButton(
+          onPressed: () {},
+          child: Text(
+            AppLocalizations.of(context)!.follow,
+          ),
+        ),
       ],
     );
   }
