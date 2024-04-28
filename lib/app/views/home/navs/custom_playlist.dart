@@ -13,21 +13,22 @@ class CustomPlaylistSection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final models = ref.watch(customPlaylistNotifierProvider);
-    return models.isEmpty ?
-      const Center(
-        child: Text('No hay videos en la playlist'),
-      ) :  CustomPlaylistPlayer(models: models);
+    return models.isEmpty
+        ? const Center(
+            child: Text('No hay pitch\'s en la playlist'),
+          )
+        : CustomPlaylistPlayer(models: models);
   }
 }
 
 class CustomPlaylistPlayer extends ConsumerStatefulWidget {
-
   final List<BaseModel> models;
 
   const CustomPlaylistPlayer({super.key, required this.models});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => CustomPlaylistPlayerState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      CustomPlaylistPlayerState();
 }
 
 class CustomPlaylistPlayerState extends ConsumerState<CustomPlaylistPlayer> {

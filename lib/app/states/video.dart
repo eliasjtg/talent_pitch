@@ -53,7 +53,6 @@ class VideoNotifier extends _$VideoNotifier {
   }
 
   void dispose({bool force = false, bool reinitialize = true}) {
-    print('DISPOSING VIDEO STATE');
     state?.dispose(forceDispose: force);
     if (reinitialize) {
       setupController();

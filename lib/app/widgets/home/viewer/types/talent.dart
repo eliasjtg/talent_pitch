@@ -18,7 +18,8 @@ class TalentViewerWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(customPlaylistNotifierProvider);
-    final inPlaylist = ref.watch(customPlaylistNotifierProvider.notifier).contain(talent);
+    final inPlaylist =
+        ref.watch(customPlaylistNotifierProvider.notifier).contain(talent);
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -26,11 +27,20 @@ class TalentViewerWidget extends ConsumerWidget {
           color: Colors.black,
           child: const SizedBox.expand(),
         ),
-        if (controller != null && talent.video != null)
+        if (controller != null &&
+            talent.video != null &&
+            controller?.videoPlayerController != null)
           AspectRatio(
             aspectRatio: MediaQuery.of(context).size.aspectRatio,
             child: BetterPlayer(
               controller: controller!,
+            ),
+          ),
+        if (controller == null || talent.video == null)
+          const Center(
+            child: Text(
+              'Sin pitch',
+              style: TextStyle(color: Colors.white),
             ),
           ),
         Positioned(
@@ -46,8 +56,12 @@ class TalentViewerWidget extends ConsumerWidget {
                 : const Icon(Icons.favorite),
             onPressed: () {
               inPlaylist
-                  ? ref.read(customPlaylistNotifierProvider.notifier).remove(talent)
-                  : ref.read(customPlaylistNotifierProvider.notifier).store(talent);
+                  ? ref
+                      .read(customPlaylistNotifierProvider.notifier)
+                      .remove(talent)
+                  : ref
+                      .read(customPlaylistNotifierProvider.notifier)
+                      .store(talent);
             },
           ),
         ),

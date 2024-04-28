@@ -16,15 +16,18 @@ class PlaylistCategoryNotifier extends _$PlaylistCategoryNotifier {
 
   void setCategory(Category category) {
     state = category;
-    final categories = ref.read(asyncCategoriesProvider.notifier).cachedCategories;
+    final categories =
+        ref.read(asyncCategoriesProvider.notifier).cachedCategories;
     final index = categories.indexOf(category);
     if (index != -1) {
       previousCategory = categories
           .whereIndexed((int whereIndex, _) => whereIndex < index)
-          .lastWhereOrNull((Category findCategory) => findCategory.models.isNotEmpty);
+          .lastWhereOrNull(
+              (Category findCategory) => findCategory.models.isNotEmpty);
       nextCategory = categories
           .whereIndexed((int whereIndex, _) => whereIndex > index)
-          .firstWhereOrNull((Category findCategory) => findCategory.models.isNotEmpty);
+          .firstWhereOrNull(
+              (Category findCategory) => findCategory.models.isNotEmpty);
     }
   }
 
@@ -68,21 +71,24 @@ class PlaylistCategoryNotifier extends _$PlaylistCategoryNotifier {
   }
 
   void sync(List<Category> categories) {
-    if(previousCategory != null) {
-      previousCategory = categories.firstWhere((Category category) => category.key == previousCategory!.key);
+    if (previousCategory != null) {
+      previousCategory = categories.firstWhere(
+          (Category category) => category.key == previousCategory!.key);
     }
-    if(nextCategory != null) {
-      nextCategory = categories.firstWhere((Category category) => category.key == nextCategory!.key);
+    if (nextCategory != null) {
+      nextCategory = categories
+          .firstWhere((Category category) => category.key == nextCategory!.key);
     }
-    if(state != null) {
-      state = categories.firstWhere((Category category) => category.key == state!.key);
+    if (state != null) {
+      state = categories
+          .firstWhere((Category category) => category.key == state!.key);
       setCategory(state!);
     }
   }
 
   void init() {
     final categoriesListen =
-      ref.listen(asyncCategoriesProvider, (previous, next) {
+        ref.listen(asyncCategoriesProvider, (previous, next) {
       if (next.hasValue) {
         sync(next.value!);
       }

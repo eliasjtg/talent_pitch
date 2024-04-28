@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:better_player/better_player.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:readmore/readmore.dart';
 import 'package:talent_pitch/app/models/challenge.dart';
+import 'package:talent_pitch/app/states/custom_playlist.dart';
 
-class ChallengeViewerWidget extends StatelessWidget {
+class ChallengeViewerWidget extends ConsumerWidget {
   /// [challenge]
   final Challenge challenge;
 
@@ -14,11 +16,20 @@ class ChallengeViewerWidget extends StatelessWidget {
       {super.key, required this.challenge, required this.controller});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(customPlaylistNotifierProvider);
+    final inPlaylist =
+        ref.watch(customPlaylistNotifierProvider.notifier).contain(challenge);
     return Stack(
       fit: StackFit.expand,
       children: [
-        if (controller != null && challenge.video != null)
+        Container(
+          color: Colors.black,
+          child: const SizedBox.expand(),
+        ),
+        if (controller != null &&
+            challenge.video != null &&
+            controller?.videoPlayerController != null)
           AspectRatio(
             aspectRatio: MediaQuery.of(context).size.aspectRatio,
             child: BetterPlayer(
@@ -30,6 +41,36 @@ class ChallengeViewerWidget extends StatelessWidget {
             challenge.image!,
             fit: BoxFit.contain,
           ),
+        if ((controller == null || challenge.video == null) &&
+            challenge.image == null)
+          const Center(
+            child: Text(
+              'Sin pitch',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: IconButton(
+            iconSize: 32,
+            icon: inPlaylist
+                ? const Icon(
+                    Icons.favorite,
+                    color: Colors.red,
+                  )
+                : const Icon(Icons.favorite),
+            onPressed: () {
+              inPlaylist
+                  ? ref
+                      .read(customPlaylistNotifierProvider.notifier)
+                      .remove(challenge)
+                  : ref
+                      .read(customPlaylistNotifierProvider.notifier)
+                      .store(challenge);
+            },
+          ),
+        ),
         Positioned(
           bottom: 0,
           left: 0,
@@ -73,7 +114,8 @@ class ChallengeViewerWidget extends StatelessWidget {
                         const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 5)),
                         if (challenge.companyName != null)
-                          Expanded(child: Text(
+                          Expanded(
+                              child: Text(
                             challenge.companyName!,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context)

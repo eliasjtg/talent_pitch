@@ -179,11 +179,11 @@ class CompanyContent extends StatelessWidget {
             ),
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          GestureDetector(
-            onTap: onTap,
-            child: Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2),
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              child: GestureDetector(
+                onTap: onTap,
                 child: Text(
                   company.name,
                   overflow: TextOverflow.ellipsis,

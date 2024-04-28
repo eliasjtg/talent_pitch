@@ -30,8 +30,9 @@ class AsyncCategories extends _$AsyncCategories {
   }
 
   @override
-  bool updateShouldNotify(AsyncValue<List<Category>> previous, AsyncValue<List<Category>> next) {
-    if(next.hasValue) {
+  bool updateShouldNotify(
+      AsyncValue<List<Category>> previous, AsyncValue<List<Category>> next) {
+    if (next.hasValue) {
       cachedCategories = next.value!;
     }
     return super.updateShouldNotify(previous, next);

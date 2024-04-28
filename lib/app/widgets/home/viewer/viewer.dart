@@ -35,11 +35,11 @@ class ViewerView extends ConsumerWidget {
       body: SafeArea(
         child: GestureDetector(
           onHorizontalDragEnd: (details) {
-            if((details.primaryVelocity ?? 0) >= 500) {
+            if ((details.primaryVelocity ?? 0) >= 500) {
               print('SWIPE LEFT');
               onSwipeLeft?.call();
             }
-            if((details.primaryVelocity ?? 0) <= 500) {
+            if ((details.primaryVelocity ?? 0) <= 500) {
               print('SWIPE RIGHT');
               onSwipeRight?.call();
             }

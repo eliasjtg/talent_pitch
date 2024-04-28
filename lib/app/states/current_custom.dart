@@ -10,9 +10,11 @@ class CurrentCustomNotifier extends _$CurrentCustomNotifier {
   @override
   BaseModel? build() => null;
 
+  set current(BaseModel? model) => state = model;
+
   void init() {
     final model = ref.read(customPlaylistNotifierProvider).firstOrNull;
-    if(model != null) {
+    if (model != null) {
       state = model;
     }
   }
@@ -20,16 +22,16 @@ class CurrentCustomNotifier extends _$CurrentCustomNotifier {
   void previous() {
     final models = ref.read(customPlaylistNotifierProvider);
     final index = models.indexOf(state!);
-    if(index > 0) {
-      state = models[index -1];
+    if (index > 0) {
+      state = models[index - 1];
     }
   }
 
   void next() {
     final models = ref.read(customPlaylistNotifierProvider);
     final index = models.indexOf(state!);
-    if(index < models.length -1) {
-      state = models[index +1];
+    if (index < models.length - 1) {
+      state = models[index + 1];
     }
   }
 
@@ -40,12 +42,12 @@ class CurrentCustomNotifier extends _$CurrentCustomNotifier {
 
   @override
   bool updateShouldNotify(BaseModel? previous, BaseModel? next) {
-    if(next != null && next.video != null) {
+    if (next != null && next.video != null) {
       ref.read(videoNotifierProvider.notifier).setDatasource(next.video!);
     } else {
       try {
         ref.read(videoNotifierProvider)?.pause();
-      } catch(_){}
+      } catch (_) {}
     }
     return super.updateShouldNotify(previous, next);
   }

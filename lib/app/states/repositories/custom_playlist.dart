@@ -40,7 +40,8 @@ class CustomPlaylistRepository {
 
     if (value != null) {
       return (jsonDecode(value) as List<dynamic>)
-          .map<BaseModel>((dynamic model) => jsonToBaseModel(model as Map<String, dynamic>))
+          .map<BaseModel>(
+              (dynamic model) => jsonToBaseModel(model as Map<String, dynamic>))
           .toList();
     }
 

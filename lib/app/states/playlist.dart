@@ -17,15 +17,17 @@ class PlaylistNotifier extends _$PlaylistNotifier {
   }
 
   void previous() {
-    final model = ref.read(playlistCategoryNotifierProvider.notifier).previous(state!);
-    if(model != null) {
+    final model =
+        ref.read(playlistCategoryNotifierProvider.notifier).previous(state!);
+    if (model != null) {
       state = model;
     }
   }
 
   void next() {
-    final model = ref.read(playlistCategoryNotifierProvider.notifier).next(state!);
-    if(model != null) {
+    final model =
+        ref.read(playlistCategoryNotifierProvider.notifier).next(state!);
+    if (model != null) {
       state = model;
     }
   }
@@ -38,12 +40,13 @@ class PlaylistNotifier extends _$PlaylistNotifier {
 
   @override
   bool updateShouldNotify(BaseModel? previous, BaseModel? next) {
-    if(next != null && next.video != null) {
+    final videoController = ref.read(videoNotifierProvider);
+    if (next != null && next.video != null) {
       ref.read(videoNotifierProvider.notifier).setDatasource(next.video!);
-    } else {
+    } else if (videoController?.videoPlayerController != null) {
       try {
-        ref.read(videoNotifierProvider)?.pause();
-      } catch(_){}
+        videoController?.pause();
+      } catch (_) {}
     }
     return super.updateShouldNotify(previous, next);
   }

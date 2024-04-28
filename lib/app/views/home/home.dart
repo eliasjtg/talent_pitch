@@ -15,7 +15,6 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class HomeViewState extends ConsumerState<HomeView> {
-
   late final ProviderSubscription<int> navListen;
 
   @override
@@ -24,7 +23,7 @@ class HomeViewState extends ConsumerState<HomeView> {
       ref.read(customPlaylistNotifierProvider.notifier).init();
     });
     navListen = ref.listenManual(currentNavIndexProvider, (previous, next) {
-      if(previous == 1 && next == 0) {
+      if (previous == 1 && next == 0) {
         /// Close
         ref.read(currentCustomNotifierProvider.notifier).onClose();
       }
