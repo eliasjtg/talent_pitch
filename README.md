@@ -23,6 +23,10 @@
 
 **Aditional**: Uses `dart format` to keep recommended code format in the app.
 
+A design similar to that of the Talent Pitch productive application was used in terms of the organization of components, simple colors and a minimalist interface.
+Regarding optimizations, with Riverpod mostly AutoDisposable states were used, which automatically releases resources when they are no longer being used, the use of Serialization allows better management of the API's responses, transforming, organizing and managing them in a better way. of conversion to and from JSON for better saving in storage and the use of Better player brings with it some improvements to its parent packages, including the preloading of following videos.
+The custom playlist uses a state to interact with the connected application with flutter_secure_storage for storage in real time after any changes made.
+
 ## Installation:
 
 ```bash
